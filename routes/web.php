@@ -21,21 +21,21 @@ use Illuminate\Support\Facades\Auth;
 Route::get('/', function () {
     return view('welcome');
 });
-/*
+
 Route::get('index', [ProductController::class, 'index']);
-Route::get('add', [ProductController::class, 'add']);
+Route::get('../../add', [ProductController::class, 'add']);
 Route::post('save', [ProductController::class, 'save']);
 Route::get('edit/{id}', [ProductController::class, 'edit']);
 Route::post('update', [ProductController::class, 'update']);
 Route::get('delete/{id}', [ProductController::class, 'delete']);
-*/
+
 
 Route::get('customer/index', [ProductController::class, 'index']);
 Route::get('customer/product.blade.php', [ProductController::class, 'product']);
 
 Route::get('admin/index.blade.php', [AdminController::class, 'index']);
-Route::get('admin/login.blade.php', [AdminController::class, 'login']);
-Route::get('admin/register.blade.php', [AdminController::class, 'register']);
+Route::get('admin/login.blade.php', [AdminController::class, 'login'])->name('login');
+Route::get('admin/register.blade.php', [AdminController::class, 'register'])->name('register');
+Route::post('admin/login.blade.php', [YourController::class, 'checkvalue'])->name('login');
 
-Route::get('/login', [Auth::class, 'login']);
-Route::get('/registration', [Auth::class, 'registration']);
+Route::get('admin/product', [AdminController::class, 'product']);

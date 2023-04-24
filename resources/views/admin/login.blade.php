@@ -37,9 +37,6 @@
                   </div>
               </div>
           </div>
-          @error('email')
-              <span class="text-danger">{{ $message }}</span>
-          @enderror
       </div>
       
       <div class="form-group">
@@ -51,9 +48,6 @@
                   </div>
               </div>
           </div>
-          @error('password')
-              <span class="text-danger">{{ $message }}</span>
-          @enderror
       </div>
       
         </div>
