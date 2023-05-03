@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\ConnectController;
@@ -24,7 +25,13 @@ Route::get('/Customer/shoppingcart',[HomePageController::class,'shoppingcart']);
 //Login&Register
 Route::get('/Connect/register',[ConnectController::class,'register']);
 Route::get('/Connect/login',[ConnectController::class,'login']);
-Route::post('/Connect/registerUser',[ConnectController::class,'registerUser']);
+//Connect
+Route::post('/Connect/register-User', [ConnectController::class,'registerUser'])->name('register-User');
+Route::post('/Connect/login-User', [ConnectController::class,'loginUser'])->name('login-User');
+//Admin
+Route::get('Admin/projects',[AdminProductController::class,'ProductList']);
+Route::post('update',[AdminProductController::class,'update']);
+Route::get('delete/{id}',[AdminProductController::class,'delete']);
 
 
 

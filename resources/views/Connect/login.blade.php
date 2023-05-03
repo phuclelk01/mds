@@ -25,17 +25,26 @@
     <div class="card-body login-card-body">
       <p class="login-box-msg">Sign in to start your session</p>
 
-      <form action="../../index3.html" method="post">
+      <form action="{{Route('login-User')}}" method="post">
+        @if (Session::has('success'))
+        <div class="alert alert-success">{{Session::get('success')}}</div>
+        @endif
+        @if (Session::has('fail'))
+        <div class="alert alert-danger">{{Session::get('fail')}}</div>
+        @endif
+        @csrf
+        @error('email') {{$message}} @enderror
         <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Email">
+          <input type="email" class="form-control" name="email" placeholder="Email" value="{{old('email')}}">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
             </div>
           </div>
         </div>
+        @error('password') {{$message}} @enderror
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password">
+          <input type="password" class="form-control" name="password" placeholder="Password" value="{{old('password')}}">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
