@@ -928,10 +928,6 @@
                             @endif
                         @endforeach
 
-                        @if ($dataproduct->currentPage() > 3)
-                            <li class="page-item disabled"><a class="page-link">...</a></li>
-                        @endif
-
                         @if ($dataproduct->hasMorePages())
                             <li class="page-item"><a class="page-link"
                                     href="{{ $dataproduct->nextPageUrl() }}">&raquo;</a></li>

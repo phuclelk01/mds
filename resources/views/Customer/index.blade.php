@@ -1230,9 +1230,30 @@
 
 			<!-- Load more -->
 			<div class="flex-c-m flex-w w-full p-t-45">
-				<a href="#" class="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04">
-					Load More
-				</a>
+                <ul class="pagination">
+                    @if ($dataproduct->onFirstPage())
+                        <li class="page-item disabled"><a class="page-link">&laquo;</a></li>
+                    @else
+                        <li class="page-item"><a class="page-link"
+                                href="{{ $dataproduct->previousPageUrl() }}">&laquo;</a></li>
+                    @endif
+                    @foreach ($dataproduct->getUrlRange(max(1, $dataproduct->currentPage() - 2), min($dataproduct->lastPage(), $dataproduct->currentPage() + 2)) as $page => $url)
+                        @if ($page == $dataproduct->currentPage())
+                            <li class="page-item active"><span
+                                    class="page-link">{{ $page }}</span></li>
+                        @else
+                            <li class="page-item"><a class="page-link"
+                                    href="{{ $url }}">{{ $page }}</a></li>
+                        @endif
+                    @endforeach
+
+                    @if ($dataproduct->hasMorePages())
+                        <li class="page-item"><a class="page-link"
+                                href="{{ $dataproduct->nextPageUrl() }}">&raquo;</a></li>
+                    @else
+                        <li class="page-item disabled"><a class="page-link">&raquo;</a></li>
+                    @endif
+                </ul>
 			</div>
 		</div>
 	</section>
