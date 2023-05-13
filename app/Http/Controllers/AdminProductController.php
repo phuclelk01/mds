@@ -6,10 +6,10 @@ use Illuminate\Http\Request;
 
 class AdminProductController extends Controller
 {
-
+    
     public function ProductList (){
         $dataproduct = product::select('*')
-        ->paginate(10) ;
+        ->paginate(3) ;
         return view('Admin.projects',['dataproduct' => $dataproduct]);
     }
 

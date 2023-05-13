@@ -49,16 +49,14 @@
 					</div>
 
 					<div class="right-top-bar flex-w h-full">
-						<a href="#" class="flex-c-m trans-04 p-lr-25">
-							Help & FAQs
+						<a href="{{ url('dashboard') }}" class="flex-c-m trans-04 p-lr-25">
+							Hi: {{ $data->email }}
 						</a>
-
-						<a href="{{url('/Connect/login')}}" class="flex-c-m trans-04 p-lr-25">
-							My Account
-						</a>
-
-						<a href="{{url('/Connect/register')}}" class="flex-c-m p-lr-10 trans-04">
-							Register
+						
+						
+						
+						<a href="{{url('/Customer/index')}}" class="flex-c-m p-lr-10 trans-04">
+							Logout
 						</a>
 					</div>
 				</div>
@@ -162,9 +160,9 @@
 						</a>
 							<a href="{{ url('/Connect/login') }}" class="flex-c-m trans-04 p-lr-25">
 								My Account
-						</a>					
-						<a href="{{url('/Connect/register')}}" class="flex-c-m p-lr-10 trans-04">
-							Register
+							</a>					
+						<a href="{{url('logout')}}" class="flex-c-m p-lr-10 trans-04">
+							logout
 						</a>
 
 					</div>

@@ -541,9 +541,9 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="../examples/project-edit.html" class="nav-link">
+                <a href="{{url('Admin/listaccus')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Project Edit</p>
+                  <p>List account customer</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -804,9 +804,9 @@
           </li>
           <li class="nav-header">LABELS</li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="{{url('/Customer/index')}}" class="nav-link">
               <i class="nav-icon far fa-circle text-danger"></i>
-              <p class="text">Important</p>
+              <p class="text">Loguot</p>
             </a>
           </li>
           <li class="nav-item">
