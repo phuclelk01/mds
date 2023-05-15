@@ -23,7 +23,9 @@
     Route::get('/Customer/index',[HomePageController::class,'index']);
     Route::get('/Customer/products',[HomePageController::class,'products']);
     Route::get('/Customer/shoppingcart',[HomePageController::class,'shoppingcart']);
-    Route::get('/Customer/dashboard',[ConnectController::class,'dashboard']);
+    Route::get('/Customer/products',[HomePageController::class,'ProductListIndex']);
+
+
     //Login&Register
     Route::get('/Connect/register',[ConnectController::class,'register']);
     Route::get('/Connect/login',[ConnectController::class,'login']);
@@ -33,11 +35,18 @@
     Route::post('/Connect/login-User', [ConnectController::class,'loginUser'])->name('login-User');
     Route::post('/Connect/login-Admin', [ConnectController::class,'loginAdmin'])->name('login-Admin');
 
-    //Admin
-    Route::get('Admin/projects',[AdminProductController::class,'ProductList']);
-    Route::post('update',[AdminProductController::class,'update']);
-    Route::get('delete/{id}',[AdminProductController::class,'delete']);
-    //manage accus
-    Route::get('Admin/listaccus',[AdminManageUser::class,'listaccus']);
-    Route::get('delete/{id}',[AdminManageUser::class,'delete']);
-    Route::get('showPassword/{id}',[AdminManageUser::class,'showPassword']);
+
+        //Admin
+        Route::get('Admin/projects',[AdminProductController::class,'ProductList']);
+        Route::post('update',[AdminProductController::class,'update']);
+        Route::get('deleteproduct/{product_id}',[AdminProductController::class,'deleteproduct']);
+        //manage accus
+        Route::get('Admin/listaccus',[AdminManageUser::class,'listaccus']);
+        Route::get('delete/{id}',[AdminManageUser::class,'delete']);
+        Route::get('showPassword/{id}',[AdminManageUser::class,'showPassword']);
+
+    //Cart
+        Route::post('/buy{product_id}', [HomePageController::class,'buy'])->name('buy');
+        Route::get('/Customer/dashboard',[ConnectController::class,'dashboard']);
+
+

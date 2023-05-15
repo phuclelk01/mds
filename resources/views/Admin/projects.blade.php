@@ -876,7 +876,7 @@
                             <th>Description</th>
                             <th>Category ID</th>
                             <th>Brand ID</th>
-                            <th>Status</th>
+                            <Th>Image</Th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -884,13 +884,15 @@
                         @foreach ($dataproduct as $product)
                             <tr>
                                 <td>{{ $product->product_id }}</td>
-                                <td><a>{{ $product->product_name }}</a></td>
+                                <td>{{ $product->product_name }}</td>
                                 <td>{{ $product->price }}</td>
                                 <td>{{ $product->quantity }}</td>
                                 <td>{{ $product->description }}</td>
                                 <td>{{ $product->category_id }}</td>
                                 <td>{{ $product->brand_id }}</td>
-                                <td><span class="badge badge-success">Success</span></td>
+                                <td>
+                                    <img  src="{{ asset('Model/' . $product->image_path_1) }}" alt="Hình ảnh" style="width:80px; height:100px;">
+                                </td>
                                 <td class="project-actions text-right" style="display: flex; justify-content: space-between;">
                                     <a class="btn btn-primary btn-sm" href="#">
                                         <i class="fas fa-folder"></i>
@@ -913,7 +915,7 @@
                 <div class="d-flex justify-content-center">
                     <ul class="pagination">
                         @if ($dataproduct->onFirstPage())
-                            <li class="page-item disabled"><a class="page-link">&laquo;</a></li>
+                            <li class="page-item disa   bled"><a class="page-link">&laquo;</a></li>
                         @else
                             <li class="page-item"><a class="page-link"
                                     href="{{ $dataproduct->previousPageUrl() }}">&laquo;</a></li>
