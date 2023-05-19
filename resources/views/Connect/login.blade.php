@@ -18,17 +18,14 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="../../index2.html"><b>Admin</b>LTE</a>
+    <a href="../../index2.html"><b>4S</b>Figure</a>
   </div>
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">
       <p class="login-box-msg">Sign in to start your session</p>
 
-      <form action="{{Route('login-User')}}" method="post">
-        @if (Session::has('success'))
-        <div class="alert alert-success">{{Session::get('success')}}</div>
-        @endif
+      <form action="{{Route('loginconnect')}}" method="post">
         @if (Session::has('fail'))
         <div class="alert alert-danger">{{Session::get('fail')}}</div>
         @endif
@@ -68,15 +65,6 @@
         </div>
       </form>
 
-      <div class="social-auth-links text-center mb-3">
-        <p>- OR -</p>
-        <a href="#" class="btn btn-block btn-primary">
-          <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
-        </a>
-        <a href="#" class="btn btn-block btn-danger">
-          <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
-        </a>
-      </div>
       <!-- /.social-auth-links -->
 
       <p class="mb-1">

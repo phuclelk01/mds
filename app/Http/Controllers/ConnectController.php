@@ -1,87 +1,146 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\Admin;
+use App\Models\Order;
+Use Illuminate\Support\Carbon;
 use App\Http\Controllers\HomePageController;
+Use Illuminate\Support\Facades\Auth;
+use App\Models\Orders;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
+
 class ConnectController extends Controller
 {
-    public function register(){
+    public function register()
+    {
         return view('Connect.register');
     }
-    public function login(){
+
+    public function login()
+    {
         return view('Connect.login');
     }
-    public function loginUser(Request $request)
+
+    public function loginconnect(Request $request)
     {
         $request->validate([
             'email' => 'required|email',
             'password' => 'required|min:5'
         ]);
-        $users = User::where('email', $request['email'])->first();
-        if($users){
-            if ($users || !Hash::check($request['password'], $users->password)) {
-                $request->session()->put('email',$users->email);
-                return redirect('/Customer/index');
-            }else{
-                return back()->with('fail','Password not matched.');
+        $Admin = Admin::where('email', '=', $request->email)->first();
+        $User = User::where('email', '=', $request->email)->first();
+
+        if ($Admin) {
+            if ($request->password == $Admin->password) {
+                $request->session()->put('email', $Admin->email);
+                return redirect('Admin/dashboard');
+            } else {
+                return back()->with('fail', 'Password not matched.');
             }
-        }else{
-            return back()->with('fail','This email is not registered');
+        } else if ($User) {
+            if (Hash::check($request->password, $User->password)) {
+                $request->session()->put('email', $User->email);
+                $request->session()->put('user_name', $User->user_name);
+                $order = new Orders();
+                $user_id = $User->user_id; // Lấy giá trị 'user_id' từ đối tượng User
+                $request->session()->put('user_id', $user_id);
+                $lastLoginDate = $User->last_login_date;
+                $currentDate = Carbon::now()->toDateString(); // Ngày hiện tại
+                if ($lastLoginDate != $currentDate) {
+                    // Người dùng đăng nhập vào một ngày mới, cập nhật ngày mới
+                    $order->order_date = Carbon::now();
+                } else {
+                    // Người dùng đã đăng nhập trong cùng một ngày, giữ ngày cũ
+                    $order->order_date = $lastLoginDate;
+                }
+                $order->user_id = $user_id;
+                $order->total = 0; // Gán giá trị 0 cho trường 'total'
+                $order->save(); // Lưu order vào cơ sở dữ liệu
+                // Lưu order vào cơ sở dữ liệu // Lưu order vào cơ sở dữ liệu
+                return redirect('Customer/dashboard');
+            } else {
+                return back()->with('fail', 'Password not matched.');
+            }
+        } else {
+            return back()->with('fail', 'This email does not exist.');
         }
     }
 
+    public function registerUser(Request $request)
+{
+    $user_name = $request->input('name');
+    $email = $request->input('email');
+    $password = $request->input('password');
+    $gender = $request->input('gender');
+    $birthday = $request->input('birthday');
 
-        function registerUser(Request $request) {
-        // Lấy thông tin người dùng từ form đăng ký
-        $customer_name = $request->input('name');
-        $email = $request->input('email');
-        $password = $request->input('password');
+    $request->validate([
+        'name' => 'required',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|min:5|confirmed',
+        'password_confirmation' => 'required|min:5|same:password',
+        'gender' => 'required',
+        'birthday' => 'required|date',
+    ], [
+        'name.required' => 'Please enter your name',
+        'email.required' => 'Please enter your email address',
+        'email.email' => 'Email address is not valid',
+        'email.unique' => 'The email address has been used',
+        'password.required' => 'Please enter a password',
+        'password.min' => 'Password must be at least 5 characters',
+        'password_confirmation.required' => 'Please enter a password',
+        'password_confirmation.min' => 'Password must be at least 5 characters',
+        'password_confirmation.confirmed' => 'Password does not match',
+        'gender.required' => 'Please select your gender',
+        'birthday.required' => 'Please enter your birthday',
+        'birthday.date' => 'Invalid birthday',
+    ]);
 
-        // Kiểm tra xem người dùng đã tồn tại trong cơ sở dữ liệu chưa
-        $existingUser = User::where('email', $email)->first();
+    $existingUser = User::where('email', $email)->first();
 
-        if ($existingUser) {
-          // Nếu người dùng đã tồn tại, hiển thị thông báo lỗi
-          return redirect()->back()->with('error', 'Email đã tồn tại, vui lòng chọn email khác.');
-        } else {
-            $request->validate([
-                'name' => 'required',
-                'email' => 'required|email|unique:users,email',
-                'password' => 'required|min:5|confirmed',
-                'password_confirmation' => 'required|min:5|same:password',
+    if ($existingUser) {
+        return redirect()->back()->with('error', 'Email already exists, please choose another email.');
+    }
 
-            ],[
-                'name.required' => 'Vui lòng nhập tên của bạn',
-                'email.required:users' => 'Vui lòng nhập địa chỉ email của bạn',
-                'email.email' => 'Địa chỉ email không hợp lệ',
-                'email.unique' => 'Địa chỉ email đã được sử dụng',
-                'password.required' => 'Vui lòng nhập mật khẩu',
-                'password.min' => 'Mật khẩu phải có ít nhất 5 ký tự',
-                'password_confirmation.required' => 'Vui lòng nhập mật khẩu',
-                'password_confirmation.min' => 'Mật khẩu phải có ít nhất 5 ký tự',
-                'password_confirmation.confirmed' => 'Mật khẩu không khớp',
-            ]);
-            $email = $request->input('email');
-            if (User::where('email', $email)->exists()) {
-                return back()->withErrors(['email' => 'Địa chỉ email đã tồn tại']);
-            }
-          // Nếu người dùng chưa tồn tại, tạo tài khoản mới cho người dùng
-            $users = new User();
-            $users->user_id = uniqid('', true); // tạo mã có độ dài 23 ký tự
-            $users->customer_name = $request->name;
-            $users->email = $request->email;
-            $users->password = Hash::make($request->password);
-            $users->save();
+    $users = new User();
+    $unique_id = mt_rand(100000, 999999);
+    while (User::where('user_id', $unique_id)->exists()) {
+        $unique_id = mt_rand(100000, 999999);
+    }
 
+    $users->user_id = $unique_id;
+    $users->user_name = $user_name;
+    $users->email = $email;
+    $users->password = Hash::make($password);
+    $users->gender = $gender;
+    $users->birthday = $birthday;
+    $users->save();
 
-                  // Hiển thị thông báo đăng ký thành công và chuyển hướng về trang đăng nhập
-                  if ($users) {
-                    return redirect()->route('index')->with('success', 'Đăng ký tài khoản thành công');
-                } else {
-                    return back()->with('fail', 'Something went wrong! Please try again!');
-                }
-        }
+    if ($users) {
+        return redirect('/Connect/register')->with('success', 'Account registration successful');
+    } else {
+        return back()->with('fail', 'Something went wrong! Please try again!');
+    }
+}
+    public function dashboard()
+{
+    $customerEmail = session()->get('email');
+    $data = User::where('email', $customerEmail)->first();
+    return view('Customer.dashboard', compact('data'));
+}
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    return redirect('/Customer/index');
     }
 }
